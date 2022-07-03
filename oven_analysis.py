@@ -1,14 +1,14 @@
+#This is a sample file that I used to create an all in one script for another production plant
+
 import pandas as pd
-from IP21Connect_v2 import IP21Connector
+from IP21Connect import IP21Connector
 import getpass
 from Capacity import CureCapacity
 
-from Params import *
-
+#How to create a connection to an AspenTech IP21 tag database
 def login_IP21():
   user = input("Username: ")
   domain_user = 'NA\\' + user
-  #print(domain_user)
   pwd = getpass.getpass()
   db = input("Database name: ")
   
@@ -34,11 +34,13 @@ def main():
         max_temp = 600,
         max_fan = 1167,
         tag_temp = 'WE1_PI_OV_ZONE_B_TEMP',
-        tag_fan = 'WE1_PI_OV_FAN_ZA_SPD',
+        tag_fan = 'WE1_PI_OV_FAN_ZB_SPD',
         tag_chutes = chutes
     )
 
     aspen.connect()
+    timestamp = '1-JUN-21 00:00'
+    period = '00:05'
     df_a = zone_a.tag_history(aspen, timestamp, period)
     df_a = df_a.loc[df_a['WE1_NO_CHUTES'] <= 2]
     df_a = df_a.reset_index(drop=True)
